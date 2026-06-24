@@ -1,5 +1,49 @@
 import { useState, useEffect, useRef } from "react";
 
+const SOCIAL_LINKS = [
+  { href: "#", label: "Facebook", icon: "/assets/icons/facebook.svg" },
+  { href: "#", label: "Instagram", icon: "/assets/icons/instgram.svg" },
+  { href: "#", label: "LinkedIn", icon: "/assets/icons/linkedin.svg" },
+  { href: "#", label: "Email", icon: "/assets/icons/email.svg" },
+];
+
+const FOOTER_SECTIONS = [
+  {
+    title: "تصفح الفرص",
+    links: [
+      { label: "كل الفرص", href: "#" },
+      { label: "المسابقات", href: "#" },
+      { label: "المؤتمرات", href: "#" },
+      { label: "فرص التطوع", href: "#" },
+    ],
+  },
+  {
+    title: "تصفح الوظائف",
+    links: [
+      { label: "الوظائف", href: "#" },
+      { label: "المنح", href: "#" },
+      { label: "الزمالات", href: "#" },
+      { label: "فرص التدريب", href: "#" },
+    ],
+  },
+  {
+    title: "روابط إضافية",
+    links: [
+      { label: "المقالات", href: "#" },
+      { label: "من نحن", href: "#" },
+      { label: "تواصل معنا", href: "#" },
+    ],
+  },
+  {
+    title: "سياساتنا",
+    links: [
+      { label: "سياسة الخصوصية", href: "#" },
+      { label: "سياسة الاستخدام", href: "#" },
+      { label: "الشروط والأحكام", href: "#" },
+    ],
+  },
+];
+
 export default function Footer() {
   const footerRef = useRef(null);
   const [translateY, setTranslateY] = useState(0);
@@ -16,7 +60,7 @@ export default function Footer() {
 
         if (rect.top <= viewportHeight) {
           const scrolledIntoView = viewportHeight - rect.top;
-          const factor = window.innerWidth < 640 ? 0.03 : 0.08;
+          const factor = window.innerWidth < 640 ? 0.01 : 0.1;
           setTranslateY(scrolledIntoView * factor);
         }
       });
@@ -35,97 +79,74 @@ export default function Footer() {
     <div ref={footerRef} className="w-full relative">
       <div className="w-full overflow-hidden block relative h-[120px] sm:h-[400px]">
         <img
-          src="/footer-back.svg"
+          src="/assets/footer/footer-back.svg"
           alt="Background Layer"
           className="w-full object-cover object-top h-[135%] sm:h-[115%] absolute inset-x-0 bottom-0 will-change-transform"
           style={{ transform: `translateY(${translateY}px)` }}
         />
         <img
-          src="/footer-front.svg"
+          src="/assets/footer/footer-front.svg"
           alt="Front Layer"
           className="w-full object-cover object-top h-full absolute inset-0 z-10 block"
         />
       </div>
 
-      <footer className="bg-[#24572A] text-white pt-24 pb-12 overflow-hidden text-right select-none relative z-20" dir="rtl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-white/10">
-            
-            <div className="lg:col-span-4 flex flex-col items-start space-y-6">
+      <footer
+        className="bg-linear-to-t from-brand-green to-[#24572A] text-white py-20 overflow-hidden text-right select-none relative z-20"
+        dir="rtl"
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-4 pb-20">
+            <div className="lg:col-span-5 flex flex-col items-start space-y-10">
               <img
-                src="/assets/logo/white.png"
+                src="/assets/logo/logoWhitoutText.svg"
                 alt="شعار فرص خضراء الأبيض"
-                className="h-16 w-auto object-contain"
+                className="h-14 w-auto object-contain"
               />
-              
-              <div className="flex flex-col space-y-2 w-full max-w-[200px]">
-                <span className="text-xs text-white/40 font-medium">اللغة</span>
-                <div className="bg-black/20 px-3 py-2 rounded-md text-xs flex items-center justify-between cursor-pointer hover:bg-black/30 transition-colors">
-                  <span>العربية</span>
-                  <span className="text-[10px] text-white/60">▼</span>
+
+              <div className="flex items-center gap-6">
+                {SOCIAL_LINKS.map((link) => (
+                  <a 
+                    key={link.label} 
+                    href={link.href} 
+                    aria-label={link.label}
+                    className="hover:opacity-80 transition-opacity duration-200"
+                  >
+                    <img
+                      src={link.icon}
+                      alt={link.label}
+                      className="w-10 h-10 invert"
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-8 lg:gap-4">
+              {FOOTER_SECTIONS.map((section) => (
+                <div key={section.title} className="flex flex-col space-y-4">
+                  <h4 className="text-sm font-normal text-white/40 tracking-wide">
+                    {section.title}
+                  </h4>
+                  <ul className="space-y-3 text-sm font-normal text-white">
+                    {section.links.map((link) => (
+                      <li key={link.label}>
+                        <a
+                          href={link.href}
+                          className="hover:underline transition-all duration-200"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-
-              <div className="flex items-center space-x-4 space-x-reverse text-lg text-white/60">
-                <a href="#" className="hover:text-white transition-colors">𝕏</a>
-                <a href="#" className="hover:text-white transition-colors">📸</a>
-                <a href="#" className="hover:text-white transition-colors"> Facebook </a>
-                <a href="#" className="hover:text-white transition-colors"> YouTube </a>
-              </div>
+              ))}
             </div>
-
-            <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
-              <div className="flex flex-col space-y-4">
-                <h4 className="text-xs font-bold text-white/40 tracking-wider uppercase">
-                  تصفح الفرص
-                </h4>
-                <ul className="space-y-3 text-sm text-white/80">
-                  <li><a href="#" className="hover:text-white transition-colors">كل الفرص</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">المسابقات</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">المؤتمرات</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">فرص التطوع</a></li>
-                </ul>
-              </div>
-
-              <div className="flex flex-col space-y-4">
-                <h4 className="text-xs font-bold text-white/40 tracking-wider uppercase">
-                  تصفح الوظائف
-                </h4>
-                <ul className="space-y-3 text-sm text-white/80">
-                  <li><a href="#" className="hover:text-white transition-colors">الوظائف</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">المنح</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">الزمالات</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">فرص التدريب</a></li>
-                </ul>
-              </div>
-
-              <div className="flex flex-col space-y-4">
-                <h4 className="text-xs font-bold text-white/40 tracking-wider uppercase">
-                  روابط إضافية
-                </h4>
-                <ul className="space-y-3 text-sm text-white/80">
-                  <li><a href="#" className="hover:text-white transition-colors">المقالات</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">من نحن</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">تواصل معنا</a></li>
-                </ul>
-              </div>
-
-              <div className="flex flex-col space-y-4">
-                <h4 className="text-xs font-bold text-white/40 tracking-wider uppercase">
-                  سياساتنا
-                </h4>
-                <ul className="space-y-3 text-sm text-white/80">
-                  <li><a href="#" className="hover:text-white transition-colors">سياسة الخصوصية</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">سياسة الاستخدام</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">الشروط والأحكام</a></li>
-                </ul>
-              </div>
-            </div>
-
           </div>
 
           <div className="pt-16 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none">
-            <h2 className="text-[11vw] font-black tracking-tighter leading-none text-black/10 uppercase whitespace-nowrap">
+            <h2 className="text-[11vw] font-black tracking-tighter leading-none text-white uppercase whitespace-nowrap">
               فــــرص خضــــراء
             </h2>
           </div>
