@@ -51,7 +51,7 @@ function App() {
 
             {displayedOpportunities.length > 0 ? (
               <div className="flex flex-col items-center gap-8 mt-10 sm:mt-12">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full animate-fade-in">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full animate-fade-in">
                   {displayedOpportunities.map((opp) => (
                     <OpportunityCard
                       key={opp.id}

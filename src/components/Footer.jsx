@@ -145,7 +145,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="pt-16 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none">
+          <div className="pt-12 sm:pt-16 lg:pt-32 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none">
             <h2 className="text-[11vw] font-black tracking-tighter leading-none text-white uppercase whitespace-nowrap">
               فــــرص خضــــراء
             </h2>
