@@ -6,28 +6,18 @@ import OpportunityCard from "./Card";
 import NoResults from "./NoResults";
 import opportunitiesData from "../data/opportunities.json";
 
-// ==========================================
-// CONSTANTS
-// ==========================================
 const ITEMS_PER_PAGE = 12;
 
 export default function Dashboard() {
-  // ==========================================
-  // STATE DEFINITIONS
-  // ==========================================
   const [filteredOpportunities, setFilteredOpportunities] = useState(opportunitiesData);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchBarKey, setSearchBarKey] = useState(0);
   const lenisRef = useRef(null);
 
-  // Store the Lenis instance for imperative scrolling
   useLenis((lenis) => {
     lenisRef.current = lenis;
   });
 
-  // ==========================================
-  // PAGINATION & DATA SLICING LOGIC
-  // ==========================================
   const totalPages = Math.ceil(filteredOpportunities.length / ITEMS_PER_PAGE);
 
   const displayedOpportunities = useMemo(() => {
@@ -35,18 +25,14 @@ export default function Dashboard() {
     return filteredOpportunities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredOpportunities, currentPage]);
 
-  // Automatically scroll to top whenever the page changes or filters alter the visible items
   useEffect(() => {
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { duration: 1.2 });
+      lenisRef.current.scrollTo(0, { immediate: true });
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "auto" });
     }
   }, [currentPage, filteredOpportunities.length]);
 
-  // ==========================================
-  // EVENT HANDLERS
-  // ==========================================
   const handleFilterResults = useCallback((results) => {
     setFilteredOpportunities(results);
     setCurrentPage(1);
@@ -62,12 +48,8 @@ export default function Dashboard() {
     setCurrentPage(pageNumber);
   };
 
-  // ==========================================
-  // RENDER UI
-  // ==========================================
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header Section */}
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-juman font-bold text-brand-dark flex items-center justify-center gap-2">
           <span className="text-brand-green">🌱</span>
@@ -75,7 +57,6 @@ export default function Dashboard() {
         </h1>
       </div>
 
-      {/* Smart Filter/Search Input */}
       <SearchBar
         key={searchBarKey}
         opportunities={opportunitiesData}
@@ -84,7 +65,6 @@ export default function Dashboard() {
 
       {displayedOpportunities.length > 0 ? (
         <div className="flex flex-col items-center gap-8 mt-10 sm:mt-12">
-          {/* Opportunities Display Responsive Grid */}
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full animate-fade-in">
             {displayedOpportunities.map((opp) => (
               <OpportunityCard
@@ -98,10 +78,8 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* Pagination Controls Footer UI */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-1.5 mt-6 dir-rtl">
-              {/* Previous Page Navigation Button */}
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -110,7 +88,6 @@ export default function Dashboard() {
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              {/* Numeric Intermediate Pages Buttons Mapper */}
               {Array.from({ length: totalPages }, (_, index) => {
                 const pageNum = index + 1;
                 const isCurrent = currentPage === pageNum;
@@ -129,7 +106,6 @@ export default function Dashboard() {
                 );
               })}
 
-              {/* Next Page Navigation Button */}
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}

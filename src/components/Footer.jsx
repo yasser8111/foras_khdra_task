@@ -60,8 +60,14 @@ export default function Footer() {
 
         if (rect.top <= viewportHeight) {
           const scrolledIntoView = viewportHeight - rect.top;
-          const factor = window.innerWidth < 640 ? 0.01 : 0.1;
-          setTranslateY(scrolledIntoView * factor);
+          
+          // Fixed calculation logic to handle different standard mobile viewports smoothly
+          const isMobile = window.innerWidth < 640;
+          const factor = isMobile ? 0.05 : 0.1;
+          const maxTranslate = isMobile ? 25 : 80;
+          
+          const calculatedTranslate = scrolledIntoView * factor;
+          setTranslateY(Math.min(calculatedTranslate, maxTranslate));
         }
       });
     };
@@ -77,11 +83,12 @@ export default function Footer() {
 
   return (
     <div ref={footerRef} className="w-full relative">
-      <div className="w-full overflow-hidden block relative h-[120px] sm:h-[400px]">
+      {/* Visual Panorama Svg Container Panel */}
+      <div className="w-full overflow-hidden block relative h-[140px] sm:h-[400px]">
         <img
           src="/assets/footer/footer-back.svg"
           alt="Background Layer"
-          className="w-full object-cover object-top h-[135%] sm:h-[115%] absolute inset-x-0 bottom-0 will-change-transform"
+          className="w-full object-cover object-top h-[140%] sm:h-[125%] absolute inset-x-0 bottom-0 will-change-transform"
           style={{ transform: `translateY(${translateY}px)` }}
         />
         <img
@@ -91,6 +98,7 @@ export default function Footer() {
         />
       </div>
 
+      {/* Main Structural Link Directory Wrapper Grid */}
       <footer
         className="bg-linear-to-t from-brand-green to-[#24572A] text-white py-20 overflow-hidden text-right select-none relative z-20"
         dir="rtl"
@@ -145,6 +153,7 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Large Typography Brand Layout Title Footer Banner */}
           <div className="pt-12 sm:pt-16 lg:pt-32 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none">
             <h2 className="text-[11vw] font-black tracking-tighter leading-none text-white uppercase whitespace-nowrap">
               فــــرص خضــــراء
