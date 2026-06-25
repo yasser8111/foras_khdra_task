@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Fuse from "fuse.js";
 import {
   X,
   Briefcase,
@@ -8,31 +9,96 @@ import {
   CircleDollarSign,
 } from "lucide-react";
 
+// ==========================================
+// CONSTANTS & CONFIGURATION
+// ==========================================
 const CATEGORIES_DATA = {
   منحة: { icon: GraduationCap },
   تدريب: { icon: Briefcase },
   مسابقة: { icon: Trophy },
 };
 
-const FUNDING_STATUSES = ["ممكّنة بالكامل", "تمويل جزئي", "غير ممكّنة"];
+const FUNDING_STATUSES = ["ممول بالكامل", "تمويل جزئي", "غير ممول"];
 
-export default function SmartSearchBar({
-  searchQuery,
-  setSearchQuery,
-  selectedCategory,
-  setSelectedCategory,
-  selectedFunding,
-  setSelectedFunding,
-  clearAllFilters,
-}) {
+export default function SmartSearchBar({ opportunities = [], onFilterResults }) {
+  // ==========================================
+  // STATE & REFS
+  // ==========================================
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedFunding, setSelectedFunding] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const searchContainerRef = useRef(null);
 
+  // ==========================================
+  // FILTERING LOGIC FUNCTIONS
+  // ==========================================
+  
+  // Handles typo-tolerant and partial text search using Fuse.js
+  const performFuzzySearch = useCallback((data, query) => {
+    const cleanQuery = query.trim().toLowerCase();
+    if (!cleanQuery) return data;
+
+    const fuse = new Fuse(data, {
+      keys: ["title", "description", "publisher"],
+      threshold: 0.4, // Controls the balance between strictness and typo tolerance
+      distance: 100,
+      ignoreLocation: true,
+    });
+
+    return fuse.search(cleanQuery).map((result) => result.item);
+  }, []);
+
+  // Handles exact-match dropdown filtering for categories and funding status
+  const applyStaticFilters = useCallback((data, category, funding) => {
+    return data.filter((opp) => {
+      const matchesCategory = !category || opp.type === category;
+      const matchesFunding = !funding || opp.fundingStatus === funding;
+      return matchesCategory && matchesFunding;
+    });
+  }, []);
+
+  // Sync and trigger data update to parent component whenever search or filters change
+  useEffect(() => {
+    if (!onFilterResults) return;
+
+    const searchResults = performFuzzySearch(opportunities, searchQuery);
+    const fullyFiltered = applyStaticFilters(searchResults, selectedCategory, selectedFunding);
+
+    onFilterResults(fullyFiltered);
+  }, [searchQuery, selectedCategory, selectedFunding, opportunities, onFilterResults, performFuzzySearch, applyStaticFilters]);
+
+  // ==========================================
+  // EVENT HANDLERS
+  // ==========================================
+  
+  // Resets all state values back to their default empty configurations
+  const clearAllFilters = useCallback(() => {
+    setSearchQuery("");
+    setSelectedCategory(null);
+    setSelectedFunding(null);
+  }, []);
+
+  // Removes active category/funding badges step-by-step when pressing Backspace on an empty text input
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace" && searchQuery === "") {
+      if (selectedFunding) {
+        setSelectedFunding(null);
+      } else if (selectedCategory) {
+        setSelectedCategory(null);
+      }
+    }
+  };
+
+  // ==========================================
+  // INTERACTION EFFECTS (CLICK OUTSIDE / SCROLL CLOSING)
+  // ==========================================
   useEffect(() => {
     if (!showFilters) return;
 
     const initialScrollTop = window.scrollY;
 
+    // Closes the panel if the user clicks anywhere outside the component container
     const handleClickOutside = (event) => {
       if (
         searchContainerRef.current &&
@@ -42,6 +108,7 @@ export default function SmartSearchBar({
       }
     };
 
+    // Closes the panel automatically if the user scrolls significantly away
     const handleScroll = () => {
       const scrollDelta = Math.abs(window.scrollY - initialScrollTop);
       if (scrollDelta > 40) {
@@ -60,12 +127,15 @@ export default function SmartSearchBar({
 
   const isFiltered = searchQuery || selectedCategory || selectedFunding;
 
+  // ==========================================
+  // RENDER UI
+  // ==========================================
   return (
     <div
       ref={searchContainerRef}
       className="w-full max-w-2xl mx-auto relative z-10"
     >
-      {/* Main Container */}
+      {/* Wrapper with dynamic height styles depending on filter expand state */}
       <div
         className={`absolute top-0 inset-x-0 bg-slate-50 border rounded-2xl p-2 transition-all duration-300 ease-out overflow-hidden shadow-sm ${
           showFilters
@@ -73,11 +143,12 @@ export default function SmartSearchBar({
             : "border-slate-200/80 max-h-[54px] focus-within:bg-white focus-within:border-brand-green"
         }`}
       >
-        {/* Input Bar */}
+        {/* Main Search Input & Badge Area */}
         <div className="flex items-center gap-2 h-[36px]">
-          <div className="flex-grow flex items-center gap-1.5 px-1.5 overflow-x-auto no-scrollbar">
+          <div className="grow flex items-center gap-1.5 px-1.5 overflow-x-auto no-scrollbar">
+            {/* Selected Category Badge */}
             {selectedCategory && (
-              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg flex-shrink-0">
+              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
                 <span>{selectedCategory}</span>
                 <button
                   onClick={() => setSelectedCategory(null)}
@@ -89,8 +160,9 @@ export default function SmartSearchBar({
               </div>
             )}
 
+            {/* Selected Funding Badge */}
             {selectedFunding && (
-              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg flex-shrink-0">
+              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
                 <span>{selectedFunding}</span>
                 <button
                   onClick={() => setSelectedFunding(null)}
@@ -102,17 +174,20 @@ export default function SmartSearchBar({
               </div>
             )}
 
+            {/* Native Text Input */}
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="ابحث فورياً في الفرص..."
               aria-label="البحث في الفرص"
-              className="flex-grow bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none py-1 font-normal"
+              className="grow bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none py-1 font-normal"
             />
           </div>
 
-          <div className="flex items-center gap-0.5 pe-0.5 flex-shrink-0">
+          {/* Action Control Buttons (Clear text / Toggle Panel) */}
+          <div className="flex items-center gap-0.5 pe-0.5 shrink-0">
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
@@ -138,7 +213,7 @@ export default function SmartSearchBar({
           </div>
         </div>
 
-        {/* Minimalist Filter Panel Grid */}
+        {/* Dropdown Filters Panel Container */}
         <div
           className={`transition-all duration-300 ease-out origin-top ${
             showFilters
@@ -147,7 +222,7 @@ export default function SmartSearchBar({
           }`}
         >
           <div className="grid grid-cols-2 gap-4 pb-3">
-            {/* Categories Segment */}
+            {/* Left Column: Categories List */}
             <div className="space-y-2">
               <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
                 <span>التصنيف الرئيسي</span>
@@ -178,7 +253,7 @@ export default function SmartSearchBar({
               </div>
             </div>
 
-            {/* Funding Segment */}
+            {/* Right Column: Funding Status List */}
             <div className="space-y-2 border-s border-slate-100 ps-4">
               <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
                 <span>حالة التمويل</span>
@@ -209,7 +284,7 @@ export default function SmartSearchBar({
             </div>
           </div>
 
-          {/* Footer Actions */}
+          {/* Panel Footer Action (Reset Settings Trigger) */}
           {isFiltered && (
             <div className="pt-2 border-t border-slate-100 flex justify-end">
               <button
@@ -223,7 +298,7 @@ export default function SmartSearchBar({
         </div>
       </div>
 
-      {/* Ghost Spacer */}
+      {/* Structural Spacer Element to preserve content document flow under absolute search bar positioning */}
       <div className="h-[54px] w-full pointer-events-none" />
     </div>
   );
