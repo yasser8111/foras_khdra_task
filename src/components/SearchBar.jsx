@@ -7,20 +7,36 @@ import {
   Trophy,
   Filter,
   CircleDollarSign,
+  Users,
+  Building2,
 } from "lucide-react";
 
 // ==========================================
 // CONSTANTS & CONFIGURATION
 // ==========================================
-const CATEGORIES_DATA = {
-  منحة: { icon: GraduationCap },
-  تدريب: { icon: Briefcase },
-  مسابقة: { icon: Trophy },
-};
+const CATEGORIES_DATA = [
+  { key: "منحة", icon: GraduationCap },
+  { key: "تدريب", icon: Briefcase },
+  { key: "زمالة", icon: Users },
+  { key: "مسابقة", icon: Trophy },
+  { key: "وظيفة", icon: Building2 },
+];
 
-const FUNDING_STATUSES = ["ممول بالكامل", "تمويل جزئي", "غير ممول"];
+const FUNDING_STATUSES = ["كامل", "جزئي", "غير ممول"];
 
-export default function SmartSearchBar({ opportunities = [], onFilterResults }) {
+const CATEGORIES_PER_COLUMN = 3;
+function chunkIntoColumns(items, size) {
+  const columns = [];
+  for (let i = 0; i < items.length; i += size) {
+    columns.push(items.slice(i, i + size));
+  }
+  return columns;
+}
+
+export default function SmartSearchBar({
+  opportunities = [],
+  onFilterResults,
+}) {
   // ==========================================
   // STATE & REFS
   // ==========================================
@@ -33,7 +49,7 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
   // ==========================================
   // FILTERING LOGIC FUNCTIONS
   // ==========================================
-  
+
   // Handles typo-tolerant and partial text search using Fuse.js
   const performFuzzySearch = useCallback((data, query) => {
     const cleanQuery = query.trim().toLowerCase();
@@ -63,15 +79,27 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
     if (!onFilterResults) return;
 
     const searchResults = performFuzzySearch(opportunities, searchQuery);
-    const fullyFiltered = applyStaticFilters(searchResults, selectedCategory, selectedFunding);
+    const fullyFiltered = applyStaticFilters(
+      searchResults,
+      selectedCategory,
+      selectedFunding,
+    );
 
     onFilterResults(fullyFiltered);
-  }, [searchQuery, selectedCategory, selectedFunding, opportunities, onFilterResults, performFuzzySearch, applyStaticFilters]);
+  }, [
+    searchQuery,
+    selectedCategory,
+    selectedFunding,
+    opportunities,
+    onFilterResults,
+    performFuzzySearch,
+    applyStaticFilters,
+  ]);
 
   // ==========================================
   // EVENT HANDLERS
   // ==========================================
-  
+
   // Resets all state values back to their default empty configurations
   const clearAllFilters = useCallback(() => {
     setSearchQuery("");
@@ -127,6 +155,12 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
 
   const isFiltered = searchQuery || selectedCategory || selectedFunding;
 
+  // Pre-split once per render into columns of CATEGORIES_PER_COLUMN items each
+  const categoryColumns = chunkIntoColumns(
+    CATEGORIES_DATA,
+    CATEGORIES_PER_COLUMN,
+  );
+
   // ==========================================
   // RENDER UI
   // ==========================================
@@ -146,9 +180,9 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
         {/* Main Search Input & Badge Area */}
         <div className="flex items-center gap-2 h-[36px]">
           <div className="grow flex items-center gap-1.5 px-1.5 overflow-x-auto no-scrollbar">
-            {/* Selected Category Badge */}
+            {/* Selected Category Badge — hidden on small screens so it doesn't shrink the input */}
             {selectedCategory && (
-              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
+              <div className="hidden sm:flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
                 <span>{selectedCategory}</span>
                 <button
                   onClick={() => setSelectedCategory(null)}
@@ -160,9 +194,9 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
               </div>
             )}
 
-            {/* Selected Funding Badge */}
+            {/* Selected Funding Badge — hidden on small screens so it doesn't shrink the input */}
             {selectedFunding && (
-              <div className="flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
+              <div className="hidden sm:flex items-center gap-1 text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg shrink-0">
                 <span>{selectedFunding}</span>
                 <button
                   onClick={() => setSelectedFunding(null)}
@@ -221,40 +255,44 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
               : "opacity-0 h-0 pointer-events-none -translate-y-2 invisible"
           }`}
         >
-          <div className="grid grid-cols-2 gap-4 pb-3">
-            {/* Left Column: Categories List */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
-                <span>التصنيف الرئيسي</span>
+          <div className="grid grid-cols-3 gap-4 pb-3">
+            {/* Category Columns: each holds up to CATEGORIES_PER_COLUMN items */}
+            {categoryColumns.map((column, columnIndex) => (
+              <div key={`category-column-${columnIndex}`} className="space-y-2">
+                {/* Header only on the first category column to avoid repeating the label */}
+                <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
+                  <span>
+                    {columnIndex === 0 ? "التصنيف الرئيسي" : "\u00A0"}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  {column.map(({ key, icon: Icon }) => {
+                    const isCurrent = selectedCategory === key;
+                    return (
+                      <button
+                        key={key}
+                        onClick={() =>
+                          setSelectedCategory(isCurrent ? null : key)
+                        }
+                        className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 ${
+                          isCurrent
+                            ? "bg-brand-green/10 text-brand-green font-medium"
+                            : "text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        <Icon
+                          className={`w-3.5 h-3.5 ${isCurrent ? "text-brand-green" : "text-slate-400"}`}
+                        />
+                        <span>{key}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="flex flex-col gap-1">
-                {Object.keys(CATEGORIES_DATA).map((catName) => {
-                  const isCurrent = selectedCategory === catName;
-                  const Icon = CATEGORIES_DATA[catName].icon;
-                  return (
-                    <button
-                      key={catName}
-                      onClick={() =>
-                        setSelectedCategory(isCurrent ? null : catName)
-                      }
-                      className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 ${
-                        isCurrent
-                          ? "bg-brand-green/10 text-brand-green font-medium"
-                          : "text-slate-600 hover:bg-slate-50"
-                      }`}
-                    >
-                      <Icon
-                        className={`w-3.5 h-3.5 ${isCurrent ? "text-brand-green" : "text-slate-400"}`}
-                      />
-                      <span>{catName}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            ))}
 
-            {/* Right Column: Funding Status List */}
-            <div className="space-y-2 border-s border-slate-100 ps-4">
+            {/* Funding Status Column */}
+            <div className="space-y-2 border-s border-slate-100 ps-3">
               <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
                 <span>حالة التمويل</span>
               </div>
