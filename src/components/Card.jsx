@@ -26,7 +26,8 @@ export default function OpportunityCard({ opportunity }) {
   const countriesText = Array.isArray(country) ? country.join("، ") : country;
   const imageUrl = id ? `opportunites-imges/${id}.png` : "/placeholder.png";
 
-  const typeAndFunding = fundingStatus ? `${type} - ${fundingStatus}` : type;
+  const displayFunding = String(fundingStatus) === "1" ? "تمويل كامل" : fundingStatus;
+  const typeAndFunding = displayFunding ? `${type} - ${displayFunding}` : type;
 
   return (
     <div className="bg-white rounded-xl md:rounded-3xl flex flex-col h-full justify-between transition-all duration-300 text-right select-none overflow-hidden border border-gray-100 hover:shadow-xl transform hover:-translate-y-1">
@@ -60,7 +61,7 @@ export default function OpportunityCard({ opportunity }) {
             </div>
           </div>
 
-          <h3 className="h-auto sm:h-12 md:h-14 text-base sm:text-lg md:text-xl font-bold leading-snug my-2 sm:my-4 md:my-6 line-clamp-2 text-gray-950">
+          <h3 className="h-auto sm:h-12 md:h-14 text-sm sm:text-lg md:text-xl font-bold leading-snug my-2 sm:my-4 md:my-6 line-clamp-2 text-gray-950">
             {title}
           </h3>
 
