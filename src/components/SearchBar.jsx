@@ -285,7 +285,7 @@ export default function SmartSearchBar({
                         onClick={() =>
                           setSelectedCategory(isCurrent ? null : key)
                         }
-                        className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 ${
+                        className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 cursor-pointer ${
                           isCurrent
                             ? "bg-brand-green/10 text-brand-green font-medium"
                             : "text-slate-600 hover:bg-slate-50"
@@ -316,7 +316,7 @@ export default function SmartSearchBar({
                       onClick={() =>
                         setSelectedFunding(isCurrent ? null : label)
                       }
-                      className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 ${
+                      className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 cursor-pointer ${
                         isCurrent
                           ? "bg-brand-green/10 text-brand-green font-medium"
                           : "text-slate-600 hover:bg-slate-50"
