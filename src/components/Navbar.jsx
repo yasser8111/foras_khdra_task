@@ -15,7 +15,9 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [menuHeight, setMenuHeight] = useState(0);
   const navRef = useRef(null);
+  const mobileListRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,20 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Measures the mobile links' real height so the open/close transition
+  // animates toward the actual content size instead of a guessed value —
+  // this keeps it perfectly in sync with isMobileMenuOpen, no lag.
+  useEffect(() => {
+    const measureMenuHeight = () => {
+      if (mobileListRef.current) {
+        setMenuHeight(mobileListRef.current.scrollHeight);
+      }
+    };
+    measureMenuHeight();
+    window.addEventListener("resize", measureMenuHeight);
+    return () => window.removeEventListener("resize", measureMenuHeight);
   }, []);
 
   useEffect(() => {
@@ -68,104 +84,114 @@ export default function Navbar() {
       className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 sm:px-6"
       dir="rtl"
     >
+      {/* Corner radius is fixed (matches half the bar's closed height) so it
+          never animates — only shadow/scale/margin react to scroll, and
+          height reacts to the mobile menu. No more radius jump on toggle. */}
       <div
-        className={`relative bg-brand-green rounded-full px-4 sm:px-6 flex items-center justify-between transition-all duration-500 origin-center h-14 sm:h-16 lg:h-20 ${
+        className={`relative bg-brand-green overflow-hidden rounded-[28px] sm:rounded-[32px] lg:rounded-[40px] transition-all duration-500 origin-center ${
           isScrolled
             ? "scale-98 shadow-xl mt-2 sm:mt-4"
             : "scale-100 shadow-none mt-4 sm:mt-8"
         }`}
       >
-        <div className="flex items-center shrink-0">
-          <a href="/" aria-label="الصفحة الرئيسية">
-            <img
-              src="/assets/logo/logo.svg"
-              alt="شعار فرص خضراء"
-              className="h-7 sm:h-8 lg:h-10 w-auto object-contain"
-            />
-          </a>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-6 text-white text-sm font-bold absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="hover:text-gray-200 transition-colors"
-            >
-              {link.label}
+        {/* Top Row: logo, desktop links, language, login, hamburger */}
+        <div className="relative flex items-center justify-between h-14 sm:h-16 lg:h-20 px-4 sm:px-6">
+          <div className="flex items-center shrink-0">
+            <a href="/" aria-label="الصفحة الرئيسية">
+              <img
+                src="/assets/logo/logo.svg"
+                alt="شعار فرص خضراء"
+                className="h-7 sm:h-8 lg:h-10 w-auto object-contain"
+              />
             </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <div className="flex items-center w-6 h-4 sm:w-7 sm:h-5 border border-white/20 rounded overflow-hidden">
-            <img
-              src="https://flagcdn.com/ps.svg"
-              alt="PS"
-              className="w-full h-full object-cover"
-            />
           </div>
 
-          <a
-            href="/login"
-            aria-label="تسجيل الدخول"
-            className="bg-brand-orange text-white p-2 sm:px-4 rounded-xl font-bold text-xs sm:text-sm hover:bg-brand-orange/90 transition-colors flex items-center justify-center gap-2"
-          >
-            <UserRound />
-            <span className="hidden sm:inline">تسجيل الدخول</span>
-          </a>
+          <div className="hidden lg:flex items-center gap-6 text-white text-sm font-bold absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="hover:text-gray-200 transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
 
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
-            aria-expanded={isMobileMenuOpen}
-            className="lg:hidden w-8 h-8 flex flex-col justify-center items-end p-1.5 gap-1.5 rounded-lg text-white hover:bg-white/10 transition-colors"
-          >
-            <span
-              className={`h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out w-5 ${
-                isMobileMenuOpen
-                  ? "-rotate-45 translate-y-[4px] origin-center"
-                  : ""
-              }`}
-            />
-            <span
-              className={`h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out ${
-                isMobileMenuOpen
-                  ? "w-5 rotate-45 translate-y-[-4px] origin-center"
-                  : "w-3"
-              }`}
-            />
-          </button>
-        </div>
-      </div>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center w-6 h-4 sm:w-7 sm:h-5 border border-white/20 rounded overflow-hidden">
+              <img
+                src="https://flagcdn.com/ps.svg"
+                alt="PS"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-      <div
-        className={`lg:hidden absolute left-4 right-4 bg-brand-green/95 backdrop-blur-md rounded-2xl mt-2 overflow-hidden transition-all duration-300 ease-out shadow-xl border border-white/10 ${
-          isMobileMenuOpen
-            ? "max-h-[450px] opacity-100 translate-y-0"
-            : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
-        }`}
-      >
-        <div className="flex flex-col py-4 px-3 gap-1">
-          {NAV_LINKS.map((link, index) => (
             <a
-              key={link.href}
-              href={link.href}
-              style={{
-                transitionDelay:
-                  isAnimating && isMobileMenuOpen ? `${index * 40}ms` : "0ms",
-              }}
-              className={`text-white text-sm font-medium py-3 px-4 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all duration-200 text-right flex items-center justify-between group ${
-                isMobileMenuOpen
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-2"
-              }`}
-              onClick={() => setIsMobileMenuOpen(false)}
+              href="/login"
+              aria-label="تسجيل الدخول"
+              className="bg-brand-orange text-white p-2 sm:px-4 rounded-xl font-bold text-xs sm:text-sm hover:bg-brand-orange/90 transition-colors flex items-center justify-center gap-2"
             >
-              <span>{link.label}</span>
-              <ArrowLeft className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+              <UserRound />
+              <span className="hidden sm:inline">تسجيل الدخول</span>
             </a>
-          ))}
+
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+              aria-expanded={isMobileMenuOpen}
+              className="lg:hidden w-8 h-8 flex flex-col justify-center items-end p-1.5 gap-1.5 rounded-lg text-white hover:bg-white/10 transition-colors"
+            >
+              <span
+                className={`h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out w-5 ${
+                  isMobileMenuOpen
+                    ? "-rotate-45 translate-y-[4px] origin-center"
+                    : ""
+                }`}
+              />
+              <span
+                className={`h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen
+                    ? "w-5 rotate-45 translate-y-[-4px] origin-center"
+                    : "w-3"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Links: lives inside the same pill, grows the container's
+            height instead of overlaying a floating panel below it. */}
+        <div
+          ref={mobileListRef}
+          style={{ maxHeight: isMobileMenuOpen ? `${menuHeight}px` : "0px" }}
+          className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            isMobileMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div className="flex flex-col gap-1 px-3 pb-3 pt-1 border-t border-white/10 mx-1">
+            {NAV_LINKS.map((link, index) => (
+              <a
+                key={link.href}
+                href={link.href}
+                style={{
+                  transitionDelay:
+                    isAnimating && isMobileMenuOpen
+                      ? `${index * 40}ms`
+                      : "0ms",
+                }}
+                className={`text-white text-sm font-medium py-3 px-4 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all duration-200 text-right flex items-center justify-between group ${
+                  isMobileMenuOpen
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-2"
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <span>{link.label}</span>
+                <ArrowLeft className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </nav>
