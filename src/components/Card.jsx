@@ -10,9 +10,8 @@ const BADGE_STYLES = {
 
 const DEFAULT_BADGE = "bg-emerald-100 text-emerald-800";
 
-export default function OpportunityCard({ opportunity, onViewDetails }) {
-  const { title, type, country, description, image, deadline, fundingStatus } =
-    opportunity;
+export default function OpportunityCard({ opportunity }) {
+  const { id, title, type, country, deadline, fundingStatus } = opportunity;
 
   let isOpen = true;
   if (deadline && deadline !== "لم يحدد") {
@@ -24,12 +23,16 @@ export default function OpportunityCard({ opportunity, onViewDetails }) {
   }
 
   const badgeClass = BADGE_STYLES[type] || DEFAULT_BADGE;
+  const countriesText = Array.isArray(country) ? country.join("، ") : country;
+  const imageUrl = id ? `opportunites-imges/${id}.png` : "/placeholder.png";
+
+  const typeAndFunding = fundingStatus ? `${type} - ${fundingStatus}` : type;
 
   return (
     <div className="bg-white rounded-3xl flex flex-col h-full justify-between transition-all duration-300 text-right select-none overflow-hidden border border-gray-100 hover:shadow-xl transform hover:-translate-y-1">
-      <div className="h-1/2 overflow-hidden bg-brand-green flex items-center justify-center">
+      <div className="h-[300px] overflow-hidden bg-brand-green flex items-center justify-center">
         <img
-          src={image || "/placeholder.png"}
+          src={imageUrl}
           alt={title}
           className="h-full w-full object-cover"
           loading="lazy"
@@ -41,23 +44,18 @@ export default function OpportunityCard({ opportunity, onViewDetails }) {
           <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium">
             <div className="flex flex-row-reverse items-center justify-between w-full">
               <span
-                className="text-sky-900 bg-sky-100 px-2 py-1 rounded-full max-w-[120px] truncate"
-                title={country || "كل دول العالم"}
+                className="text-sky-900 bg-sky-100 px-2 py-1 rounded-full max-w-[150px] truncate"
+                title={countriesText || "كل دول العالم"}
               >
-                {country || "كل دول العالم"}
+                {countriesText || "كل دول العالم"}
               </span>
 
               <div className="flex items-center gap-1.5">
                 <span
-                  className={`px-2 py-1 rounded-full truncate max-w-[100px] ${badgeClass}`}
+                  className={`px-2 py-1 rounded-full truncate max-w-[180px] ${badgeClass}`}
                 >
-                  {type}
+                  {typeAndFunding}
                 </span>
-                {fundingStatus && (
-                  <span className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 truncate max-w-[100px]">
-                    {fundingStatus}
-                  </span>
-                )}
               </div>
             </div>
           </div>
@@ -80,12 +78,14 @@ export default function OpportunityCard({ opportunity, onViewDetails }) {
         </div>
 
         <div className="flex justify-start">
-          <button
-            onClick={() => onViewDetails(opportunity)}
-            className="w-full text-md font-extrabold py-3 px-6 rounded-2xl transition-all duration-300 bg-brand-orange hover:bg-brand-orange/90 text-white cursor-pointer"
+          <a
+            href={`https://foraskhadra.com/Opportunity/Details/${id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center text-md font-extrabold py-3 px-6 rounded-2xl transition-all duration-300 bg-brand-orange hover:bg-brand-orange/90 text-white cursor-pointer"
           >
             عرض التفاصيل
-          </button>
+          </a>
         </div>
       </div>
     </div>
