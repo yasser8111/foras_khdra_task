@@ -22,7 +22,17 @@ const CATEGORIES_DATA = [
   { key: "وظيفة", icon: Building2 },
 ];
 
-const FUNDING_STATUSES = ["كامل", "جزئي", "غير ممول"];
+const FUNDING_STATUSES = [
+  { label: "كامل", test: (ratio) => ratio >= 1 },
+  { label: "جزئي", test: (ratio) => ratio >= 0.5},
+  { label: "غير ممول", test: (ratio) => ratio <= 0 },
+];
+
+// Reads the funding ratio safely, defaulting missing/invalid values to 0
+function getFundingRatio(opp) {
+  const raw = opp?.fundingStatus;
+  return typeof raw === "number" && !Number.isNaN(raw) ? raw : 0;
+}
 
 const CATEGORIES_PER_COLUMN = 3;
 function chunkIntoColumns(items, size) {
@@ -65,11 +75,14 @@ export default function SmartSearchBar({
     return fuse.search(cleanQuery).map((result) => result.item);
   }, []);
 
-  // Handles exact-match dropdown filtering for categories and funding status
-  const applyStaticFilters = useCallback((data, category, funding) => {
+  // Handles exact-match category filtering + range-based funding filtering
+  const applyStaticFilters = useCallback((data, category, fundingLabel) => {
+    const fundingMeta = FUNDING_STATUSES.find((f) => f.label === fundingLabel);
+
     return data.filter((opp) => {
       const matchesCategory = !category || opp.type === category;
-      const matchesFunding = !funding || opp.fundingStatus === funding;
+      const matchesFunding =
+        !fundingMeta || fundingMeta.test(getFundingRatio(opp));
       return matchesCategory && matchesFunding;
     });
   }, []);
@@ -256,10 +269,8 @@ export default function SmartSearchBar({
           }`}
         >
           <div className="grid grid-cols-3 gap-4 pb-3">
-            {/* Category Columns: each holds up to CATEGORIES_PER_COLUMN items */}
             {categoryColumns.map((column, columnIndex) => (
               <div key={`category-column-${columnIndex}`} className="space-y-2">
-                {/* Header only on the first category column to avoid repeating the label */}
                 <div className="flex items-center gap-1 text-xs font-semibold text-slate-400">
                   <span>
                     {columnIndex === 0 ? "التصنيف الرئيسي" : "\u00A0"}
@@ -297,13 +308,13 @@ export default function SmartSearchBar({
                 <span>حالة التمويل</span>
               </div>
               <div className="flex flex-col gap-1">
-                {FUNDING_STATUSES.map((status) => {
-                  const isCurrent = selectedFunding === status;
+                {FUNDING_STATUSES.map(({ label }) => {
+                  const isCurrent = selectedFunding === label;
                   return (
                     <button
-                      key={status}
+                      key={label}
                       onClick={() =>
-                        setSelectedFunding(isCurrent ? null : status)
+                        setSelectedFunding(isCurrent ? null : label)
                       }
                       className={`flex items-center gap-2 text-xs w-full px-2.5 py-2 rounded-xl transition-all duration-150 ${
                         isCurrent
@@ -314,7 +325,7 @@ export default function SmartSearchBar({
                       <CircleDollarSign
                         className={`w-3.5 h-3.5 ${isCurrent ? "text-brand-green" : "text-slate-400"}`}
                       />
-                      <span>{status}</span>
+                      <span>{label}</span>
                     </button>
                   );
                 })}

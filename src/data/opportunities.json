@@ -3,7 +3,7 @@
     "id": 168,
     "title": "Growvity Green Pathway Program - Batch 2",
     "type": "تدريب",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["الوطن العربي"],
     "deadline": "2026-07-20"
   },
@@ -11,7 +11,7 @@
     "id": 167,
     "title": "مسابقة المقالات الجامعية السنوية لمنتدى تانا رفيع المستوى حول الأمن في إفريقيا",
     "type": "مسابقة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": [
       "السودان",
       "ليبيا",
@@ -28,7 +28,7 @@
     "id": 166,
     "title": "مسابقة الشباب العالمية لأكاديمية التعليم الإلكتروني التابعة لمنظمة الأغذية والزراعة",
     "type": "مسابقة",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus":0,
     "country": ["كل دول العالم"],
     "deadline": "2026-07-31"
   },
@@ -36,7 +36,7 @@
     "id": 165,
     "title": "برنامج Sister-to-Sister للقيادة النسوية الشابة 2026",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-26"
   },
@@ -52,7 +52,7 @@
     "id": 163,
     "title": "برنامج الابتكارات الشاملة للذكاء الاصطناعي في إفريقيا 2026",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": [
       "السودان",
       "ليبيا",
@@ -70,7 +70,7 @@
     "id": 162,
     "title": "برنامج قادة الجيل القادم في حوكمة الموارد – الدفعة الحادية عشرة لعام 2026",
     "type": "تدريب",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": [
       "مصر",
       "السودان",
@@ -89,7 +89,7 @@
     "id": 161,
     "title": "متدرب في مبادرة (Mangrove Breakthrough)",
     "type": "تدريب",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-21"
   },
@@ -97,7 +97,7 @@
     "id": 160,
     "title": "جوائز حلول المناخ العادلة بين الجنسين 2026",
     "type": "مسابقة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-07-12"
   },
@@ -105,7 +105,7 @@
     "id": 159,
     "title": "زمالة الصندوق العالمي للخير 2027",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-30"
   },
@@ -113,7 +113,7 @@
     "id": 158,
     "title": "جوائز UNIDO العالمية للاستدامة 2026",
     "type": "مسابقة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-30"
   },
@@ -121,7 +121,7 @@
     "id": 157,
     "title": "المجموعة الوطنية للعمل المناخي (National Climate Action Group - NCAG) في العراق",
     "type": "تطوع",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["العراق"],
     "deadline": "2026-06-14"
   },
@@ -129,7 +129,7 @@
     "id": 156,
     "title": "زمالة الشراكة الإعلامية لتغطية مؤتمر المناخ COP31 للصحفيين",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["الوطن العربي"],
     "deadline": "2026-06-17"
   },
@@ -137,7 +137,7 @@
     "id": 155,
     "title": "منحة مؤسسة مو إبراهيم في جامعة الدراسات الشرقية والإفريقية (SOAS) 2026/2027",
     "type": "منحة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": [
       "مصر",
       "السودان",
@@ -156,7 +156,7 @@
     "id": 154,
     "title": "مسابقة حكايات خضراء لطلاب الجامعات العربية",
     "type": "مسابقة",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["الوطن العربي"],
     "deadline": "2026-08-30"
   },
@@ -164,7 +164,7 @@
     "id": 153,
     "title": "برنامج زمالة المسرّع للأخلاقيات والذكاء الاصطناعي (Accelerator Fellowship Programme)",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-15"
   },
@@ -172,7 +172,7 @@
     "id": 152,
     "title": "برنامج التدريب الدولي في اليابان للشباب من الدول النامية",
     "type": "تدريب",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": [
       "فلسطين",
       "الأردن",
@@ -195,7 +195,7 @@
     "id": 151,
     "title": "مساعد أول لشؤون الإعلام والمعلومات العامة (Associate Public Information Officer – P2)",
     "type": "وظيفة",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-10"
   },
@@ -203,7 +203,7 @@
     "id": 150,
     "title": "برنامج ISA–Egypt JTRC التدريبي حول الجوانب العلمية والتقنية المتعلقة بالتخطيط الإقليمي للإدارة البيئية في المحيط الهندي",
     "type": "تدريب",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["الوطن العربي"],
     "deadline": "لم يحدد"
   },
@@ -211,7 +211,7 @@
     "id": 149,
     "title": "برنامج رواد استعادة النظم البيئية 2027",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-07-31"
   },
@@ -219,7 +219,7 @@
     "id": 148,
     "title": "التحدي العالمي للابتكار الزراعي2026",
     "type": "مسابقة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-20"
   },
@@ -227,7 +227,7 @@
     "id": 147,
     "title": "برنامج زمالة RIFS_ لعام 2027",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-06-21"
   },
@@ -235,7 +235,7 @@
     "id": 145,
     "title": "برنامج دوت للمناخ – Dot Climat Champions",
     "type": "تدريب",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["الأردن"],
     "deadline": "2026-05-31"
   },
@@ -243,7 +243,7 @@
     "id": 144,
     "title": "برنامج دوت للمناخ – Dot Climat Champions",
     "type": "تدريب",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["الأردن"],
     "deadline": "2026-05-31"
   },
@@ -251,7 +251,7 @@
     "id": 143,
     "title": "تحالف ممارسات السلام 2026 من Euphrates Institute",
     "type": "زمالة",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["كل دول العالم"],
     "deadline": "2026-05-31"
   },
@@ -259,7 +259,7 @@
     "id": 142,
     "title": "برنامج التدريب الصيفي لفك شيفرة المركبات الكهربائية من شركة EKKO STARTUP",
     "type": "تدريب",
-    "fundingStatus": "غير ممولة",
+    "fundingStatus": 0,
     "country": ["كل دول العالم"],
     "deadline": "2026-05-31"
   },
@@ -267,7 +267,7 @@
     "id": 141,
     "title": "برنامج زمالة الباحثين من الجنوب العالمي",
     "type": "زمالة",
-    "fundingStatus": "ممولة بالكامل",
+    "fundingStatus": 1,
     "country": ["كل دول العالم"],
     "deadline": "2026-05-29"
   }
