@@ -137,7 +137,7 @@ export default function SmartSearchBar({ opportunities = [], onFilterResults }) 
     >
       {/* Wrapper with dynamic height styles depending on filter expand state */}
       <div
-        className={`absolute top-0 inset-x-0 bg-slate-50 border rounded-2xl p-2 transition-all duration-300 ease-out overflow-hidden shadow-sm ${
+        className={`absolute top-0 inset-x-0 bg-white border rounded-2xl p-2 transition-all duration-300 ease-out overflow-hidden ${
           showFilters
             ? "border-brand-green bg-white shadow-xl max-h-[60vh]"
             : "border-slate-200/80 max-h-[54px] focus-within:bg-white focus-within:border-brand-green"

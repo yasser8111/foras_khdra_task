@@ -9,7 +9,8 @@ import opportunitiesData from "../data/opportunities.json";
 const ITEMS_PER_PAGE = 12;
 
 export default function Dashboard() {
-  const [filteredOpportunities, setFilteredOpportunities] = useState(opportunitiesData);
+  const [filteredOpportunities, setFilteredOpportunities] =
+    useState(opportunitiesData);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchBarKey, setSearchBarKey] = useState(0);
   const lenisRef = useRef(null);
@@ -71,48 +72,51 @@ export default function Dashboard() {
                 key={opp.id}
                 opportunity={opp}
                 onViewDetails={(item) => {
-                  if (item.link)
-                    window.open(item.link, "_blank", "noopener");
+                  if (item.link) window.open(item.link, "_blank", "noopener");
                 }}
               />
             ))}
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-1.5 mt-6 dir-rtl">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="p-2 rounded-xl border border-slate-200 bg-white text-slate-600 disabled:opacity-40 disabled:hover:bg-white hover:bg-slate-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            <div className="flex items-center justify-center mt-6" dir="rtl">
+              <div className="flex items-center p-1 bg-white  rounded-xl">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-lg text-slate-600 disabled:opacity-40 hover:bg-brand-bg transition-all cursor-pointer disabled:cursor-not-allowed disabled:hover:bg-transparent "
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
 
-              {Array.from({ length: totalPages }, (_, index) => {
-                const pageNum = index + 1;
-                const isCurrent = currentPage === pageNum;
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => handlePageChange(pageNum)}
-                    className={`w-9 h-9 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
-                      isCurrent
-                        ? "bg-brand-green text-white shadow-sm"
-                        : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
+                <div className="flex items-center mx-1 gap-1">
+                  {Array.from({ length: totalPages }, (_, index) => {
+                    const pageNum = index + 1;
+                    const isCurrent = currentPage === pageNum;
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`w-8 h-8 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                          isCurrent
+                            ? "bg-brand-green text-white"
+                            : "text-slate-600 hover:bg-brand-bg "
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
 
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="p-2 rounded-xl border border-slate-200 bg-white text-slate-600 disabled:opacity-40 disabled:hover:bg-white hover:bg-slate-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-lg text-slate-600 disabled:opacity-40 hover:bg-brand-bg transition-all cursor-pointer disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>

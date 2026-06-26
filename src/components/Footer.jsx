@@ -61,7 +61,6 @@ export default function Footer() {
         if (rect.top <= viewportHeight) {
           const scrolledIntoView = viewportHeight - rect.top;
           
-          // Fixed calculation logic to handle different standard mobile viewports smoothly
           const isMobile = window.innerWidth < 640;
           const factor = isMobile ? 0.05 : 0.1;
           const maxTranslate = isMobile ? 25 : 80;
@@ -83,7 +82,6 @@ export default function Footer() {
 
   return (
     <div ref={footerRef} className="w-full relative">
-      {/* Visual Panorama Svg Container Panel */}
       <div className="w-full overflow-hidden block relative h-[140px] sm:h-[400px]">
         <img
           src="/assets/footer/footer-back.svg"
@@ -98,7 +96,6 @@ export default function Footer() {
         />
       </div>
 
-      {/* Main Structural Link Directory Wrapper Grid */}
       <footer
         className="bg-linear-to-t from-brand-green to-[#24572A] text-white py-20 overflow-hidden text-right select-none relative z-20"
         dir="rtl"
@@ -153,11 +150,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Large Typography Brand Layout Title Footer Banner */}
-          <div className="pt-12 sm:pt-16 lg:pt-32 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none">
-            <h2 className="text-[11vw] font-black tracking-tighter leading-none text-white uppercase whitespace-nowrap">
-              فــــرص خضــــراء
-            </h2>
+          <div className="pt-12 pb-4 flex flex-col items-center justify-center text-center overflow-hidden w-full select-none pointer-events-none border-t border-white/10">
+            <img 
+              src="/assets/footer/text-footer.svg" 
+              alt="Footer Text" 
+              className="w-full max-w-5xl h-auto" 
+            />
           </div>
         </div>
       </footer>
