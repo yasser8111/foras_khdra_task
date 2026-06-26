@@ -63,6 +63,9 @@
 ## تحسينات إضافية - Additional Features
 
 ### الهيدر - Header
+<div align="center">
+  <img src="public/readme-imges/oldNewHeader.png" alt="صوره للموقع" width="100%">
+</div>
 
 <img src="public/readme-imges/oldNewHeader.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
 
