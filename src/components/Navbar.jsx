@@ -50,16 +50,29 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const initialScrollY = window.scrollY;
+
+    const handleCloseEvents = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setIsMobileMenuOpen(false);
       }
     };
 
+    const handleScrollClose = () => {
+      const scrollDelta = Math.abs(window.scrollY - initialScrollY);
+      if (scrollDelta > 40) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
     if (isMobileMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleCloseEvents);
+      window.addEventListener("scroll", handleScrollClose, { passive: true });
     }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleCloseEvents);
+      window.removeEventListener("scroll", handleScrollClose);
+    };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
