@@ -26,7 +26,7 @@
 
 ## الواجهة والتصميم - UI/UX
 
-<img src="public/readme-imges/preveiw.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/preveiw.png" alt="صوره للموقع" style=" margin-bottom: 30px;" />
 
 - **تصميم مينيماليستي (Minimalism):** واجهة عصرية وبسيطة تركز على المساحات المريحة للعين وتقليل التشتت البصري لتركيز الانتباه على المحتوى والفرص المتاحة.
 - **تناسق تام مع الهوية البصرية:** استخدام دقيق للألوان يعكس الطابع البيئي للمنصة (تدرجات الأخضر الهادئ والبرتقالي الحيوي) مع خطوط عربية مخصصة تمنح شعوراً بالاحترافية.
@@ -38,7 +38,7 @@
 
 ## حقل البحث الذكي - Smart Search Bar
 
-<img src="public/readme-imges/smartserchbar.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/smartserchbar.png" alt="صوره للموقع" style="margin-bottom: 30px;" />
 
 - **البحث المرن (Fuzzy Search):** يعتمد على Fuse.js للبحث في العناوين والأوصاف، مع تصحيح الأخطاء الإملائية تلقائياً.
 - **الحذف الذكي (Backspace):** يمكنك إزالة فلاتر البحث النشطة خطوة بخطوة بمجرد الضغط على زر Backspace عندما يكون حقل الإدخال فارغاً.
@@ -51,7 +51,7 @@
 
 ## البطاقات - Cards
 
-<img src="public/readme-imges/oldNewCard.png" alt="صوره مقارنه بين التصميم الجديد و القديم للبطايق" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/oldNewCard.png" alt="صوره مقارنه بين التصميم الجديد و القديم للبطايق" style="margin-bottom: 30px;" />
 
 - **تصميم متجاوب وتأثيرات حركية تفاعلية:** بطاقات بتصميم عصري وحواف دائرية تتكيف تماماً مع مختلف أحجام الشاشات، مع تأثير حركي سلس (Hover Effect) يرفع البطاقة ويبرز ظلها عند مرور مؤشر الفأرة لزيادة التفاعل.
 - **فحص تلقائي وديناميكي لحالة التقديم:** احتساب حالة الفرصة (متاح / انتهى التقديم) تلقائياً عبر مقارنة تاريخ اليوم بالموعد النهائي (Deadline)، مع تلوين الشارات ديناميكياً (أخضر/أحمر) لتنبيه الزائر فوراً.
@@ -63,11 +63,8 @@
 ## تحسينات إضافية - Additional Features
 
 ### الهيدر - Header
-<div align="center">
-  <img src="public/readme-imges/oldNewHeader.png" alt="صوره للموقع" width="100%">
-</div>
 
-<img src="public/readme-imges/oldNewHeader.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/oldNewHeader.png" alt="صوره للموقع" style="margin-bottom: 30px;" />
 
 - **تعديل الشعار:** تحويل الشعار من الشكل الطولي إلى العرضي ليكون الاسم أكثر وضوحاً وقابلية للقراءة.
 - **تبسيط واجهة المستخدم:** إزالة زر "إنشاء حساب" لتقليل تشتت الزائر وتفادي تعقيد التصميم، والاعتماد على تدفق موحد يبدأ من تسجيل الدخول.
@@ -78,7 +75,7 @@
 
 ### الفوتر - Footer
 
-<img src="public/readme-imges/oldNewFooter.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/oldNewFooter.png" alt="صوره للموقع" style="margin-bottom: 30px;" />
 
 - **تأثير التمرير التفاعلي (Parallax Effect):** إضافة خلفية متعددة الطبقات تتحرك ديناميكياً وبسرعات مختلفة أثناء التمرير (Scroll) مدعومة بـ `requestAnimationFrame` لمنح واجهة المستخدم عمقاً وجاذبية بصرية مميزة.
 - **إعادة تنظيم شبكة الروابط:** إعادة ترتيب وتوزيع روابط التنقل والأقسام في شبكة متجاوبة (Grid Layout) لتسهيل الوصول إلى الفرص، الوظائف، والسياسات بشكل منظم ومريح للعين.
@@ -89,7 +86,7 @@
 
 ## التقنيات - Technologies
 
-<img src="public/readme-imges/Technologies.png" alt="صوره للموقع" style="border-radius: 20px; margin-bottom: 30px;" />
+<img src="public/readme-imges/Technologies.png" alt="صوره للموقع" style="margin-bottom: 30px;" />
 
 ### 1. React 19 - إطار واجهة المستخدم
 
