@@ -28,9 +28,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Measures the mobile links' real height so the open/close transition
-  // animates toward the actual content size instead of a guessed value —
-  // this keeps it perfectly in sync with isMobileMenuOpen, no lag.
   useEffect(() => {
     const measureMenuHeight = () => {
       if (mobileListRef.current) {
@@ -84,17 +81,13 @@ export default function Navbar() {
       className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl px-4 sm:px-6"
       dir="rtl"
     >
-      {/* Corner radius is fixed (matches half the bar's closed height) so it
-          never animates — only shadow/scale/margin react to scroll, and
-          height reacts to the mobile menu. No more radius jump on toggle. */}
       <div
         className={`relative bg-brand-green overflow-hidden rounded-[28px] sm:rounded-[32px] lg:rounded-[40px] transition-all duration-500 origin-center ${
-          isScrolled
+          isScrolled && !isMobileMenuOpen
             ? "scale-98 shadow-xl mt-2 sm:mt-4"
             : "scale-100 shadow-none mt-4 sm:mt-8"
         }`}
       >
-        {/* Top Row: logo, desktop links, language, login, hamburger */}
         <div className="relative flex items-center justify-between h-14 sm:h-16 lg:h-20 px-4 sm:px-6">
           <div className="flex items-center shrink-0">
             <a href="/" aria-label="الصفحة الرئيسية">
@@ -159,9 +152,6 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
-        {/* Mobile Links: lives inside the same pill, grows the container's
-            height instead of overlaying a floating panel below it. */}
         <div
           ref={mobileListRef}
           style={{ maxHeight: isMobileMenuOpen ? `${menuHeight}px` : "0px" }}
@@ -180,7 +170,7 @@ export default function Navbar() {
                       ? `${index * 40}ms`
                       : "0ms",
                 }}
-                className={`text-white text-sm font-medium py-3 px-4 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all duration-200 text-right flex items-center justify-between group ${
+                className={`text-white text-sm font-medium py-3 px-4 rounded-xl hover:bg-white/10 active:scale-98 active:bg-white/20 transition-all duration-200 text-right flex items-center justify-between group ${
                   isMobileMenuOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-2"
